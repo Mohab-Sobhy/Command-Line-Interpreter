@@ -1,10 +1,10 @@
 
 public class Main {
     public static void main(String[] args) {
-        CommandParser.setRawInput("mkdir /home");
+        CommandParser.setRawInput("mkdir -aker /home/etc /mohab /ramy >> file.txt");
         CommandParser.splitRawInput();
-        CommandParser.validateCommand();
-        CommandParser.executeCommand();
+        CommandParser.print();
+        //CommandParser.executeCommand();
 
     }
 }

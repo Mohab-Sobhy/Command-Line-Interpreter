@@ -10,9 +10,7 @@ public class Argument {
     public String getValue(){
         return value;
     }
-    public void setIsAvailable(boolean IsAvailable){
-        isAvailable = IsAvailable;
-    }
+    public void setIsAvailable(boolean IsAvailable){isAvailable = IsAvailable;}
     public boolean getIsAvailable(){
         return isAvailable;
     }
