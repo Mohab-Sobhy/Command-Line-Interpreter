@@ -3,44 +3,69 @@ import CommandPart.Command;
 import CommandPart.Option;
 
 public class CommandParser {
+    private static boolean isTherePipe = false;
+    private static boolean isThereRedirectOutput = false;
+    private static boolean isThereAppendOutput = false;
     private static String rawInput;
     private static Command command = new Command();
     private static Option option = new Option();
     private static Argument argument = new Argument();
+    private static String RedirectionTarget = "Screen";
+    private static String nextRawCommandAfterPipe;
 
     public static void setRawInput(String input){
         rawInput = input; // [ls -l /home/user/Documents]
     }
 
-    public static void splitRawInput(){
-        int commandEndIndex = rawInput.indexOf(" ");
-        int optionStartIndex = rawInput.indexOf("-");
-        int argumentStartIndex = rawInput.indexOf(" ", commandEndIndex + 1);
+    public static void splitRawInput() {
+        String[] parts = rawInput.trim().split("\\s+");
 
-        if(commandEndIndex == -1){
-            command.setValue(rawInput.substring(0, rawInput.length()));
-        }
-        else{
-            command.setValue(rawInput.substring(0, commandEndIndex));
+        if (parts.length == 0) {
+            command.setIsAvailable(true);
+            return;
         }
 
-        if(optionStartIndex == -1){
-            option.setValue('#');
-            option.setIsAvailable(false);
-        }
-        else{
-            option.setValue(rawInput.charAt(optionStartIndex + 1));
-            option.setIsAvailable(true);
+        command.setValue(parts[0]);
+
+        if (parts.length > 1) {
+            if (parts[1].startsWith("-") && parts[1].length() > 1) {
+                option.setValue(parts[1].charAt(1));
+                option.setIsAvailable(true);
+            } else {
+                argument.setValue(parts[1]);
+                argument.setIsAvailable(true);
+            }
         }
 
-        if(argumentStartIndex == -1){
-            argument.setValue("#");
-            argument.setIsAvailable(false);
+        if (parts.length > 2) {
+            argument.setValue(parts[2]);
         }
-        else{
-            argument.setValue(rawInput.substring(argumentStartIndex+1, rawInput.length()));
+
+        for (int i = 1; i < parts.length; i++) {
+            switch (parts[i]) {
+                case ">":
+                    isThereRedirectOutput = true;
+                    if (i + 1 < parts.length) {
+                        RedirectionTarget = parts[i + 1];
+                    }
+                    return;
+                case ">>":
+                    isThereAppendOutput = true;
+                    if (i + 1 < parts.length) {
+                        RedirectionTarget = parts[i + 1];
+                    }
+                    return;
+                case "|":
+                    isTherePipe = true;
+                    for (int j = i + 1; j < parts.length; j++) {
+                        nextRawCommandAfterPipe += parts[j] + " ";
+                    }
+                    nextRawCommandAfterPipe = nextRawCommandAfterPipe.trim();
+                    return;
+            }
         }
     }
+
 
     public static void validateCommand() {
         String[] definedCommands = {"pwd", "ls", "mkdir", "rmdir", "touch", "mv", "rm", "cat"};
@@ -90,17 +115,17 @@ public class CommandParser {
                 break;
 
             case "mkdir" :
-                    try{
-                        if(argument.getIsAvailable() == false){
-                            throw new RuntimeException("missing Argument");
-                        }
-                        else{
-                            //DirectoryAction.mkdir(argument.getValue());
-                        }
+                try{
+                    if(argument.getIsAvailable() == false){
+                        throw new RuntimeException("missing Argument");
                     }
-                    catch (RuntimeException e){
-                        e.printStackTrace();
+                    else{
+                        //DirectoryAction.mkdir(argument.getValue());
                     }
+                }
+                catch (RuntimeException e){
+                    e.printStackTrace();
+                }
                 break;
 
 
@@ -109,8 +134,9 @@ public class CommandParser {
     }
 
     public static void print(){
-        System.out.println(command);
-        System.out.println(option);
-        System.out.println(argument);
+        System.out.println(command.getValue());
+        System.out.println(option.getValue());
+        System.out.println(argument.getValue());
+        System.out.println(RedirectionTarget);
     }
 }
