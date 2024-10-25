@@ -146,7 +146,7 @@ public class CommandParser {
                         throw new IllegalArgumentException("missing Argument");
                     }
                     else{
-
+                        //FileAction.mv(arguments);
                     }
                 }
                 catch (IllegalArgumentException e){
@@ -191,10 +191,21 @@ public class CommandParser {
                 break;
 
             default:
-                System.err.print(command+": command not found");
+                System.err.print(command + ": command not found");
 
         }
     }
+
+    public static void reset() {
+        isThereAPipe = false;
+        isThereARedirectOutput = false;
+        isThereAnAppendOutput = false;
+        rawInput = null;
+        command = null;
+        options.clear();
+        arguments.clear();
+    }
+
 
     public static void print(){
         System.out.println(command);
