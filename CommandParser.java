@@ -4,11 +4,11 @@ public class CommandParser {
     public static boolean isThereAPipe = false;
     public static boolean isThereARedirectOutput = false;
     public static boolean isThereAnAppendOutput = false;
+    public static String redirectionTarget = "Screen";
     private static String rawInput;
     private static String command;
     private static final ArrayList<Character> options = new ArrayList<>();
     private static final ArrayList<String> arguments = new ArrayList<>();
-    private static String redirectionTarget = "Screen";
     private static String nextRawCommandAfterPipe;
 
 
