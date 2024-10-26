@@ -5,13 +5,13 @@ public class Option {
     private boolean isAvailable;
 
     public void setValue(char Value){
-        value = Value;
+        this.value = Value;
     }
     public char getValue(){
         return value;
     }
     public void setIsAvailable(boolean IsAvailable){
-        isAvailable = IsAvailable;
+        this.isAvailable = IsAvailable;
     }
     public boolean getIsAvailable(){
         return isAvailable;

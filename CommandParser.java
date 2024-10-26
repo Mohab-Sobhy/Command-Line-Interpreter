@@ -76,7 +76,7 @@ public class CommandParser {
     public static void executeCommand(){
         switch (command){
             case "pwd" :
-                //DirectoryExplorer.pwd();
+                DirectoryExplorer.pwd();
                 break;
 
             case "ls" :
@@ -93,7 +93,7 @@ public class CommandParser {
                         //DirectoryExplorer.ls(arguments);
                     }
                     else{
-                        //DirectoryExplorer.ls();
+                        DirectoryExplorer.ls();
                     }
                 }
                 break;
@@ -183,11 +183,11 @@ public class CommandParser {
                 break;
 
             case "exit" :
-                //InternalCommands.exit()
+                InternalCommands.exit();
                 break;
 
             case "help":
-                //InternalCommands.help()
+                InternalCommands.help();
                 break;
 
             default:

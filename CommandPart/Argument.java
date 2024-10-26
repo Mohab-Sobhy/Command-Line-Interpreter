@@ -5,12 +5,12 @@ public class Argument {
     private boolean isAvailable;
 
     public void setValue(String Value){
-        value = Value;
+        this.value = Value;
     }
     public String getValue(){
         return value;
     }
-    public void setIsAvailable(boolean IsAvailable){isAvailable = IsAvailable;}
+    public void setIsAvailable(boolean IsAvailable){this.isAvailable = IsAvailable;}
     public boolean getIsAvailable(){
         return isAvailable;
     }
