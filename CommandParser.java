@@ -11,6 +11,13 @@ public class CommandParser {
     private static final ArrayList<String> arguments = new ArrayList<>();
     private static String nextRawCommandAfterPipe;
 
+    private static void reset(){
+        isThereAPipe = false;
+        isThereARedirectOutput = false;
+        isThereAnAppendOutput = false;
+        nextRawCommandAfterPipe = null;
+        redirectionTarget = "Screen";
+    }
 
     public static void setRawInput(String input){
         rawInput = input; // [ls -l /home/user/Documents]
@@ -61,11 +68,7 @@ public class CommandParser {
             }
         }
 
-        isThereAPipe = false;
-        isThereARedirectOutput = false;
-        isThereAnAppendOutput = false;
-        nextRawCommandAfterPipe = null;
-        redirectionTarget = "Screen";
+        reset();
 
         for (int i = 1; i < parts.length; i++) {
             switch (parts[i]) {
@@ -84,9 +87,6 @@ public class CommandParser {
                     return;
 
                 case ">" :
-                    if(isThereARedirectOutput){
-                        continue;
-                    }
                     isThereARedirectOutput = true;
                     if (i + 1 < parts.length) {
                         redirectionTarget = parts[i + 1];
@@ -94,9 +94,6 @@ public class CommandParser {
                     break;
 
                 case ">>" :
-                    if(isThereARedirectOutput){
-                        continue;
-                    }
                     isThereAnAppendOutput = true;
                     if (i + 1 < parts.length) {
                         redirectionTarget = parts[i + 1];
