@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class CommandParser {
-    public static boolean isThereAPipe = false;
-    public static boolean isThereARedirectOutput = false;
-    public static boolean isThereAnAppendOutput = false;
-    public static String redirectionTarget = "Screen";
+    public static boolean isThereAPipe;
+    public static boolean isThereARedirectOutput;
+    public static boolean isThereAnAppendOutput;
+    public static String redirectionTarget;
     private static String rawInput;
     private static String command;
     private static final ArrayList<Character> options = new ArrayList<>();
@@ -45,31 +45,66 @@ public class CommandParser {
 
         }
 
+        for (int i = 1; i < parts.length; i++) {
+            if(parts[i].equals("|")){
+                isThereAPipe = true;
+                StringBuilder nextCommandBuilder = new StringBuilder(parts[i + 1]).append(" ");
+                for (int j = i + 2; j < parts.length; j++) {
+                    nextCommandBuilder.append(parts[j]).append(" ");
+                }
+                nextRawCommandAfterPipe = nextCommandBuilder.toString().trim();
+                break;
+            }
+            else{
+                isThereAPipe = false;
+                nextRawCommandAfterPipe = null;
+            }
+        }
+
+        isThereAPipe = false;
+        isThereARedirectOutput = false;
+        isThereAnAppendOutput = false;
+        nextRawCommandAfterPipe = null;
+        redirectionTarget = "Screen";
 
         for (int i = 1; i < parts.length; i++) {
             switch (parts[i]) {
-                case ">":
+                case "|":
+                    isThereAPipe = true;
+                    if (i + 1 < parts.length) {
+                        StringBuilder nextCommandBuilder = new StringBuilder(parts[i + 1]).append(" ");
+                        for (int j = i + 2; j < parts.length; j++) {
+                            nextCommandBuilder.append(parts[j]).append(" ");
+                        }
+                        nextRawCommandAfterPipe = nextCommandBuilder.toString().trim();
+                    }
+                    else {
+                        nextRawCommandAfterPipe = "";
+                    }
+                    return;
+
+                case ">" :
+                    if(isThereARedirectOutput){
+                        continue;
+                    }
                     isThereARedirectOutput = true;
                     if (i + 1 < parts.length) {
                         redirectionTarget = parts[i + 1];
                     }
-                    return;
-                case ">>":
+                    break;
+
+                case ">>" :
+                    if(isThereARedirectOutput){
+                        continue;
+                    }
                     isThereAnAppendOutput = true;
                     if (i + 1 < parts.length) {
                         redirectionTarget = parts[i + 1];
                     }
-                    return;
-                case "|":
-                    isThereAPipe = true;
-                    StringBuilder nextCommandBuilder = new StringBuilder(parts[i + 1]).append(" ");
-                    for (int j = i + 2; j < parts.length; j++) {
-                        nextCommandBuilder.append(parts[j]).append(" ");
-                    }
-                    nextRawCommandAfterPipe = nextCommandBuilder.toString().trim();
-                    return;
+                    break;
             }
         }
+
     }
 
 
@@ -196,26 +231,17 @@ public class CommandParser {
         }
     }
 
-    public static void reset() {
-        isThereAPipe = false;
-        isThereARedirectOutput = false;
-        isThereAnAppendOutput = false;
-        rawInput = null;
-        command = null;
-        options.clear();
-        arguments.clear();
-    }
-
 
     public static void print(){
-        System.out.println(command);
+        System.out.println("Command: " + command);
+
         for (Character option : options) {
-            System.out.println(option + " ");
+            System.out.println("Option: " + option);
         }
         for (String argument : arguments) {
-            System.out.println(argument + " ");
+            System.out.println("Argument" + argument + " ");
         }
-        System.out.println(nextRawCommandAfterPipe);
-        System.out.println(redirectionTarget);
+        System.out.println("next raw command after pipe: " + nextRawCommandAfterPipe);
+        System.out.println("redirection target: " + redirectionTarget);
     }
 }
