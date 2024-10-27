@@ -31,7 +31,7 @@ public class CommandParser {
         }
 
         int indexOfFirstArgument = 1;
-        int indexOfLastArgument = 1;
+        int indexOfLastArgument = -1;
 
         command = parts[0];
 
@@ -46,6 +46,10 @@ public class CommandParser {
 
             for (int i = indexOfFirstArgument; i < parts.length; i++) {
                 if (parts[i].equals(">>") || parts[i].equals(">") || parts[i].equals("|")) {
+                    if(indexOfLastArgument == -1){
+                        indexOfFirstArgument--;
+                        indexOfLastArgument = indexOfFirstArgument;
+                    }
                     break;
                 } else {
                     arguments.add(parts[i]);
@@ -57,37 +61,38 @@ public class CommandParser {
 
         reset();
 
-        for (int i = indexOfLastArgument+1 ; i < parts.length; i++) {
-            switch (parts[i]) {
-                case "|":
-                    isThereAPipe = true;
-                    if (i + 1 < parts.length) {
-                        StringBuilder nextCommandBuilder = new StringBuilder(parts[i + 1]);
-                        for (int j = i + 2; j < parts.length; j++) {
-                            nextCommandBuilder.append(" ").append(parts[j]);
-                        }
-                        nextRawCommandAfterPipe = nextCommandBuilder.toString();
+        switch (parts[indexOfLastArgument+1]) {
+            case "|":
+                isThereAPipe = true;
+                if (indexOfLastArgument + 2 < parts.length) {
+                    StringBuilder nextCommandBuilder = new StringBuilder(parts[indexOfLastArgument + 2]);
+                    for (int j = indexOfLastArgument + 3; j < parts.length; j++) {
+                        nextCommandBuilder.append(" ").append(parts[j]);
                     }
-                    return;
+                    nextRawCommandAfterPipe = nextCommandBuilder.toString();
+                }
+                return;
 
-                case ">" :
-                    isThereARedirectOutput = true;
-                    if (i + 1 < parts.length) {
-                        redirectionTarget = parts[i + 1];
-                    }
-                    break;
+            case ">" :
+                isThereARedirectOutput = true;
+                if (indexOfLastArgument + 2 < parts.length) {
+                    redirectionTarget = parts[indexOfLastArgument + 2];
+                }
+                break;
 
-                case ">>" :
-                    isThereAnAppendOutput = true;
-                    if (i + 1 < parts.length) {
-                        redirectionTarget = parts[i + 1];
-                    }
-                    break;
-            }
+            case ">>" :
+                isThereAnAppendOutput = true;
+                if (indexOfLastArgument + 2 < parts.length) {
+                    redirectionTarget = parts[indexOfLastArgument + 2];
+                }
+                break;
+
+            default :
+
+                break;
         }
 
     }
-
 
     public static void executeCommand(){
         switch (command){
@@ -212,6 +217,9 @@ public class CommandParser {
         }
     }
 
+    public static String getNextRawCommandAfterPipe(){
+        return nextRawCommandAfterPipe;
+    }
 
     public static void print(){
         System.out.println("Command: " + command);

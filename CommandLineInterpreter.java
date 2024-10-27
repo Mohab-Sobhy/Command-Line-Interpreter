@@ -8,7 +8,12 @@ public class CommandLineInterpreter {
             String userInput = scanner.nextLine();
             CommandParser.setRawInput(userInput);
             CommandParser.splitRawInput();
-            CommandParser.print();
+            CommandParser.executeCommand();
+            if(CommandParser.isThereAPipe){
+                String cmd=CommandParser.getNextRawCommandAfterPipe();
+                CommandCompostion.pipe(cmd);
+            }
+
         }
     }
 }
