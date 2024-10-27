@@ -52,22 +52,6 @@ public class CommandParser {
 
         }
 
-        for (int i = 1; i < parts.length; i++) {
-            if(parts[i].equals("|")){
-                isThereAPipe = true;
-                StringBuilder nextCommandBuilder = new StringBuilder(parts[i + 1]).append(" ");
-                for (int j = i + 2; j < parts.length; j++) {
-                    nextCommandBuilder.append(parts[j]).append(" ");
-                }
-                nextRawCommandAfterPipe = nextCommandBuilder.toString().trim();
-                break;
-            }
-            else{
-                isThereAPipe = false;
-                nextRawCommandAfterPipe = null;
-            }
-        }
-
         reset();
 
         for (int i = 1; i < parts.length; i++) {
@@ -80,9 +64,6 @@ public class CommandParser {
                             nextCommandBuilder.append(parts[j]).append(" ");
                         }
                         nextRawCommandAfterPipe = nextCommandBuilder.toString().trim();
-                    }
-                    else {
-                        nextRawCommandAfterPipe = "";
                     }
                     return;
 
