@@ -24,31 +24,32 @@ public class CommandParser {
     }
 
     public static void splitRawInput() {
-
-
         String[] parts = rawInput.trim().split("\\s+");
 
         if (parts.length == 0) {
             return;
         }
 
+        int indexOfFirstArgument = 1;
+        int indexOfLastArgument = 1;
+
         command = parts[0];
 
         if (parts.length > 1) {
-            int indexOfArguments = 1;
 
             if (parts[1].startsWith("-") && parts[1].length() > 1) {
-                indexOfArguments = 2;
+                indexOfFirstArgument = 2;
                 for (int i = 1; i < parts[1].length(); i++) {
                     options.add(parts[1].charAt(i));
                 }
             }
 
-            for (int i = indexOfArguments; i < parts.length; i++) {
+            for (int i = indexOfFirstArgument; i < parts.length; i++) {
                 if (parts[i].equals(">>") || parts[i].equals(">") || parts[i].equals("|")) {
                     break;
                 } else {
                     arguments.add(parts[i]);
+                    indexOfLastArgument = i;
                 }
             }
 
@@ -56,7 +57,7 @@ public class CommandParser {
 
         reset();
 
-        for (int i = 1; i < parts.length; i++) {
+        for (int i = indexOfLastArgument+1 ; i < parts.length; i++) {
             switch (parts[i]) {
                 case "|":
                     isThereAPipe = true;
@@ -219,7 +220,7 @@ public class CommandParser {
             System.out.println("Option: " + option);
         }
         for (String argument : arguments) {
-            System.out.println("Argument" + argument + " ");
+            System.out.println("Argument: " + argument);
         }
         System.out.println("next raw command after pipe: " + nextRawCommandAfterPipe);
         System.out.println("redirection target: " + redirectionTarget);
