@@ -24,6 +24,8 @@ public class CommandParser {
     }
 
     public static void splitRawInput() {
+
+
         String[] parts = rawInput.trim().split("\\s+");
 
         if (parts.length == 0) {
@@ -59,11 +61,11 @@ public class CommandParser {
                 case "|":
                     isThereAPipe = true;
                     if (i + 1 < parts.length) {
-                        StringBuilder nextCommandBuilder = new StringBuilder(parts[i + 1]).append(" ");
+                        StringBuilder nextCommandBuilder = new StringBuilder(parts[i + 1]);
                         for (int j = i + 2; j < parts.length; j++) {
-                            nextCommandBuilder.append(parts[j]).append(" ");
+                            nextCommandBuilder.append(" ").append(parts[j]);
                         }
-                        nextRawCommandAfterPipe = nextCommandBuilder.toString().trim();
+                        nextRawCommandAfterPipe = nextCommandBuilder.toString();
                     }
                     return;
 
