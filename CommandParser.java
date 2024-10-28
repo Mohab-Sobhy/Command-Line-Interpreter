@@ -61,7 +61,7 @@ public class CommandParser {
             }
 
         }
-        if (indexOfLastArgument + 1 <= parts.length) {
+        if (indexOfLastArgument + 1 < parts.length) {
             switch (parts[indexOfLastArgument + 1]) {
                 case "|":
                     isThereAPipe = true;
@@ -93,7 +93,6 @@ public class CommandParser {
 
                     break;
             }
-
         }
     }
 
