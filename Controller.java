@@ -14,11 +14,11 @@ public class Controller {
                     if (!CommandParser.getArguments().isEmpty()) {
                         //DirectoryExplorer.ls(arguments,options);
                     } else {
-                        if ((CommandParser.getOptions().contains("r")) && CommandParser.getOptions().contains("a")) {
+                        if ((CommandParser.getOptions().contains('r')) && CommandParser.getOptions().contains('a')) {
                             DirectoryExplorer.lsAR();
-                        } else if ((CommandParser.getOptions().contains("r"))) {
+                        } else if ((CommandParser.getOptions().contains('r'))) {
                             DirectoryExplorer.lsR();
-                        } else if (CommandParser.getOptions().contains("a")) {
+                        } else if (CommandParser.getOptions().contains('a')) {
                             DirectoryExplorer.lsA();
                         } else {
                             DirectoryExplorer.ls();
@@ -29,7 +29,6 @@ public class Controller {
                         //DirectoryExplorer.ls(arguments);
                     } else {
                         DirectoryExplorer.ls();
-                        System.out.println("ls called.");
                     }
                 }
                 break;
