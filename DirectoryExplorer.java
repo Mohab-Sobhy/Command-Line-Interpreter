@@ -9,6 +9,26 @@ public class DirectoryExplorer {
         System.out.println(Meta.getCurrentDir());
     }
 
+
+    public static void cd(){
+        if (!CommandParser.getArguments().isEmpty()) {
+            String NewPath = String.join(" ", CommandParser.getArguments());
+            String CurrentPath = Meta.getCurrentDir();
+            File directory = new File(NewPath);
+            if (!directory.exists()) {
+                System.out.println("The directory " + NewPath + " does not exist: ");
+            } else {
+                if (NewPath.equals(CurrentPath)) {
+                    System.out.println("You are already in the " + CurrentPath + " directory");
+                } else {
+                    Meta.setCurrentDir(NewPath);
+                    System.out.println("the new current path is : " + NewPath);
+                }
+            }
+        } else {
+            System.out.println("No Given Path");
+        }
+    }
     // Basic ls command
     public static void ls() {
         File directory = new File(Meta.getCurrentDir());

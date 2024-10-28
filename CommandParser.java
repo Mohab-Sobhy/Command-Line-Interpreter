@@ -11,7 +11,7 @@ public class CommandParser {
     private static final ArrayList<String> arguments = new ArrayList<>();
     private static String nextRawCommandAfterPipe;
 
-    private static void reset(){
+    private static void reset() {
         isThereAPipe = false;
         isThereARedirectOutput = false;
         isThereAnAppendOutput = false;
@@ -21,7 +21,7 @@ public class CommandParser {
         arguments.clear();
     }
 
-    public static void setRawInput(String input){
+    public static void setRawInput(String input) {
         reset();
         rawInput = input; // [ls -l /home/user/Documents]
     }
@@ -49,7 +49,7 @@ public class CommandParser {
 
             for (int i = indexOfFirstArgument; i < parts.length; i++) {
                 if (parts[i].equals(">>") || parts[i].equals(">") || parts[i].equals("|")) {
-                    if(indexOfLastArgument == -1){
+                    if (indexOfLastArgument == -1) {
                         indexOfFirstArgument--;
                         indexOfLastArgument = indexOfFirstArgument;
                     }
@@ -61,40 +61,42 @@ public class CommandParser {
             }
 
         }
-
-        switch (parts[indexOfLastArgument+1]) {
-            case "|":
-                isThereAPipe = true;
-                if (indexOfLastArgument + 2 < parts.length) {
-                    StringBuilder nextCommandBuilder = new StringBuilder(parts[indexOfLastArgument + 2]);
-                    for (int j = indexOfLastArgument + 3; j < parts.length; j++) {
-                        nextCommandBuilder.append(" ").append(parts[j]);
+        if (indexOfLastArgument + 1 <= parts.length) {
+            switch (parts[indexOfLastArgument + 1]) {
+                case "|":
+                    isThereAPipe = true;
+                    if (indexOfLastArgument + 2 < parts.length) {
+                        StringBuilder nextCommandBuilder = new StringBuilder(parts[indexOfLastArgument + 2]);
+                        for (int j = indexOfLastArgument + 3; j < parts.length; j++) {
+                            nextCommandBuilder.append(" ").append(parts[j]);
+                        }
+                        nextRawCommandAfterPipe = nextCommandBuilder.toString();
+                        redirectionTarget = "nextPipe";
                     }
-                    nextRawCommandAfterPipe = nextCommandBuilder.toString();
-                    redirectionTarget = "nextPipe";
-                }
-                return;
+                    return;
 
-            case ">" :
-                isThereARedirectOutput = true;
-                if (indexOfLastArgument + 2 < parts.length) {
-                    redirectionTarget = parts[indexOfLastArgument + 2];
-                }
-                break;
+                case ">":
+                    isThereARedirectOutput = true;
+                    if (indexOfLastArgument + 2 < parts.length) {
+                        redirectionTarget = parts[indexOfLastArgument + 2];
+                    }
+                    break;
 
-            case ">>" :
-                isThereAnAppendOutput = true;
-                if (indexOfLastArgument + 2 < parts.length) {
-                    redirectionTarget = parts[indexOfLastArgument + 2];
-                }
-                break;
+                case ">>":
+                    isThereAnAppendOutput = true;
+                    if (indexOfLastArgument + 2 < parts.length) {
+                        redirectionTarget = parts[indexOfLastArgument + 2];
+                    }
+                    break;
 
-            default :
+                default:
 
-                break;
+                    break;
+            }
+
         }
-
     }
+
 
     public static String getCommand() {
         return command;
@@ -108,15 +110,15 @@ public class CommandParser {
         return arguments;
     }
 
-    public static String getNextRawCommandAfterPipe(){
+    public static String getNextRawCommandAfterPipe() {
         return nextRawCommandAfterPipe;
     }
 
-    public static String getRedirectionTarget(){
+    public static String getRedirectionTarget() {
         return redirectionTarget;
     }
 
-    public static void print(){
+    public static void print() {
         System.out.println("Command: " + command);
 
         for (Character option : options) {
