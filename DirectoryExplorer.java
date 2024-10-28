@@ -31,7 +31,7 @@ public class DirectoryExplorer {
     }
     // Basic ls command
     public static void ls() {
-        File directory = new File(Meta.getCurrentDir());
+        File directory = new File(String.join(" ", CommandParser.getArguments()));
         File[] files = directory.listFiles();
         if (files != null) {
             Arrays.sort(files);
@@ -54,7 +54,6 @@ public class DirectoryExplorer {
             }
         }
     }
-
     // ls -r command files in reverse order
     public static void lsR() {
         File directory = new File(Meta.getCurrentDir());
@@ -68,23 +67,18 @@ public class DirectoryExplorer {
             }
         }
     }
-
     // ls -a-r command shows ALL including files in reverse order
     public static void lsAR() {
         File directory = new File(Meta.getCurrentDir());
         File[] files = directory.listFiles();
         if (files != null) {
             List<String> allEntries = new ArrayList<>();
-
             // Add all file names to the list
             for (File file : files) {
                 allEntries.add(file.getName());
             }
-
-
             // Sort in reverse order
             Collections.sort(allEntries, Collections.reverseOrder());
-
             // Print all entries
             for (String entry : allEntries) {
                 System.out.println(entry);

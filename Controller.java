@@ -11,22 +11,23 @@ public class Controller {
 
             case "ls":
                 if (!CommandParser.getOptions().isEmpty()) {
-                    if (!CommandParser.getArguments().isEmpty()) {
-                        //DirectoryExplorer.ls(arguments,options);
+                    boolean hasA = CommandParser.getOptions().contains('a');
+                    boolean hasR = CommandParser.getOptions().contains('r');
+                    if (hasA && hasR) {
+                        DirectoryExplorer.lsAR();
+                    } else if (hasA) {
+                        DirectoryExplorer.lsA();
+                    } else if (hasR) {
+                        DirectoryExplorer.lsR();
                     } else {
-                        if ((CommandParser.getOptions().contains('r')) && CommandParser.getOptions().contains('a')) {
-                            DirectoryExplorer.lsAR();
-                        } else if ((CommandParser.getOptions().contains('r'))) {
-                            DirectoryExplorer.lsR();
-                        } else if (CommandParser.getOptions().contains('a')) {
-                            DirectoryExplorer.lsA();
-                        } else {
-                            DirectoryExplorer.ls();
-                        }
+                        System.err.println("Unsupported ls option");
                     }
                 } else {
                     if (!CommandParser.getArguments().isEmpty()) {
-                        //DirectoryExplorer.ls(arguments);
+                        String originalDir = Meta.getCurrentDir();
+                        Meta.setCurrentDir(CommandParser.getArguments().get(0));
+                        DirectoryExplorer.ls();
+                        Meta.setCurrentDir(originalDir);
                     } else {
                         DirectoryExplorer.ls();
                     }
