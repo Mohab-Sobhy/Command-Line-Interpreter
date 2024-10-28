@@ -12,11 +12,11 @@ public class DirectoryExplorer {
 
     public static void cd(ArrayList<String> arguments){
         if (!arguments.isEmpty()) {
-            String NewPath = String.join(" ", CommandParser.getArguments());
+            String NewPath = arguments.getFirst();
             String CurrentPath = Meta.getCurrentDir();
             File directory = new File(NewPath);
             if (!directory.exists()) {
-                System.err.println("The directory " + NewPath + " does not exist");
+                System.err.println("The directory \"" + NewPath + "\" does not exist");
             } else {
                 if (NewPath.equals(CurrentPath)) {
                     System.out.println("You are already in the " + CurrentPath + " directory");
@@ -40,7 +40,7 @@ public class DirectoryExplorer {
             pathToList = arguments.getFirst();
         }
 
-        StringBuilder sb = new StringBuilder(); //concatinate options as one string
+        StringBuilder sb = new StringBuilder(); //concatenate options as one string
         for (Character ch : options) {
             sb.append(ch);
         }

@@ -21,6 +21,31 @@ public class CommandParser {
         arguments.clear();
     }
 
+    private static void mergeQuotedArguments(){
+        ArrayList<String> newArguments = new ArrayList<>();
+        StringBuilder concatenatedArgument = new StringBuilder();
+        boolean insideQuotes = false;
+        for (String arg : arguments) {
+            if (arg.startsWith("\"")) {
+                insideQuotes = true;
+                concatenatedArgument.append(arg);
+            } else if (insideQuotes) {
+                concatenatedArgument.append(" ").append(arg);
+                if (arg.endsWith("\"")) {
+                    insideQuotes = false;
+                    String concatenatedString = concatenatedArgument.toString();
+                    concatenatedString = concatenatedString.substring(1, concatenatedString.length() - 1);
+                    newArguments.add(concatenatedString);
+                    concatenatedArgument.setLength(0);
+                }
+            } else {
+                newArguments.add(arg);
+            }
+        }
+        arguments.clear();
+        arguments.addAll(newArguments);
+    }
+
     public static void setRawInput(String input) {
         reset();
         rawInput = input; // [ls -l /home/user/Documents]
@@ -60,7 +85,11 @@ public class CommandParser {
                 }
             }
 
+            //checking if there is a space in argument and if user uses double quotes
+            mergeQuotedArguments();
+
         }
+
         if (indexOfLastArgument + 1 < parts.length) {
             switch (parts[indexOfLastArgument + 1]) {
                 case "|":
