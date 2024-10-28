@@ -4,7 +4,7 @@ public class CommandParser {
     public static boolean isThereAPipe;
     public static boolean isThereARedirectOutput;
     public static boolean isThereAnAppendOutput;
-    public static String redirectionTarget;
+    private static String redirectionTarget;
     private static String rawInput;
     private static String command;
     private static final ArrayList<Character> options = new ArrayList<>();
@@ -17,9 +17,12 @@ public class CommandParser {
         isThereAnAppendOutput = false;
         nextRawCommandAfterPipe = null;
         redirectionTarget = "Screen";
+        options.clear();
+        arguments.clear();
     }
 
     public static void setRawInput(String input){
+        reset();
         rawInput = input; // [ls -l /home/user/Documents]
     }
 
@@ -59,8 +62,6 @@ public class CommandParser {
 
         }
 
-        reset();
-
         switch (parts[indexOfLastArgument+1]) {
             case "|":
                 isThereAPipe = true;
@@ -70,6 +71,7 @@ public class CommandParser {
                         nextCommandBuilder.append(" ").append(parts[j]);
                     }
                     nextRawCommandAfterPipe = nextCommandBuilder.toString();
+                    redirectionTarget = "nextPipe";
                 }
                 return;
 
@@ -94,131 +96,24 @@ public class CommandParser {
 
     }
 
-    public static void executeCommand(){
-        switch (command){
-            case "pwd" :
-                DirectoryExplorer.pwd();
-                break;
+    public static String getCommand() {
+        return command;
+    }
 
-            case "ls" :
-                if(!options.isEmpty()){
-                    if(!arguments.isEmpty()){
-                        //DirectoryExplorer.ls(arguments,options);
-                    }
-                    else{
-                        //DirectoryExplorer.ls(options);
-                    }
-                }
-                else{
-                    if(!arguments.isEmpty()){
-                        //DirectoryExplorer.ls(arguments);
-                    }
-                    else{
-                        DirectoryExplorer.ls();
-                    }
-                }
-                break;
+    public static ArrayList<Character> getOptions() {
+        return options;
+    }
 
-            case "mkdir" :
-                try{
-                    if(arguments.isEmpty()){
-                        throw new IllegalArgumentException("missing Argument");
-                    }
-                    else{
-                        //DirectoryAction.mkdir(arguments);
-                    }
-                }
-                catch (IllegalArgumentException e){
-                    System.err.print(e.getMessage());
-                }
-                break;
-
-            case "rmdir" :
-                try{
-                    if(arguments.isEmpty()){
-                        throw new IllegalArgumentException("missing Argument");
-                    }
-                    else{
-                        //DirectoryAction.rmdir(arguments);
-                    }
-                }
-                catch (IllegalArgumentException e){
-                    System.err.print(e.getMessage());
-                }
-                break;
-
-            case "touch" :
-                try{
-                    if(arguments.isEmpty()){
-                        throw new IllegalArgumentException("missing Argument");
-                    }
-                    else{
-                        //FileAction.touch(arguments);
-                    }
-                }
-                catch (IllegalArgumentException e){
-                    System.err.print(e.getMessage());
-                }
-                break;
-
-            case "mv" :
-                try{
-                    if(arguments.size() < 2){
-                        throw new IllegalArgumentException("missing Argument");
-                    }
-                    else{
-                        //FileAction.mv(arguments);
-                    }
-                }
-                catch (IllegalArgumentException e){
-                    System.err.print(e.getMessage());
-                }
-                break;
-
-            case "rm" :
-                try{
-                    if(arguments.isEmpty()){
-                        throw new IllegalArgumentException("missing Argument");
-                    }
-                    else{
-                        //FileAction.rm(arguments);
-                    }
-                }
-                catch (IllegalArgumentException e){
-                    System.err.print(e.getMessage());
-                }
-                break;
-
-            case "cat" :
-                try{
-                    if(arguments.isEmpty()){
-                        throw new IllegalArgumentException("missing Argument");
-                    }
-                    else{
-                        //FileAction.cat(arguments);
-                    }
-                }
-                catch (IllegalArgumentException e){
-                    System.err.print(e.getMessage());
-                }
-                break;
-
-            case "exit" :
-                InternalCommands.exit();
-                break;
-
-            case "help":
-                InternalCommands.help();
-                break;
-
-            default:
-                System.err.print(command + ": command not found");
-
-        }
+    public static ArrayList<String> getArguments() {
+        return arguments;
     }
 
     public static String getNextRawCommandAfterPipe(){
         return nextRawCommandAfterPipe;
+    }
+
+    public static String getRedirectionTarget(){
+        return redirectionTarget;
     }
 
     public static void print(){

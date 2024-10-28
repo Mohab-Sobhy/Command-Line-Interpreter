@@ -1,10 +1,9 @@
+import java.net.ContentHandler;
 
 public class CommandCompostion {
     
     public static void pipe(String NextAfterPipe) {
-        CommandParser.setRawInput(NextAfterPipe);
-        CommandParser.splitRawInput();
-        CommandParser.executeCommand();   
+        Controller.executeCommand(NextAfterPipe);
     }
     public static void redirectOutput(){
         

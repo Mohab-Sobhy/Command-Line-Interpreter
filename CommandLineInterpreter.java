@@ -6,14 +6,11 @@ public class CommandLineInterpreter {
         while(true){
             System.out.print("User@ComputerName: ");
             String userInput = scanner.nextLine();
-            CommandParser.setRawInput(userInput);
-            CommandParser.splitRawInput();
-            CommandParser.executeCommand();
-            if(CommandParser.isThereAPipe){
-                String cmd=CommandParser.getNextRawCommandAfterPipe();
-                CommandCompostion.pipe(cmd);
-            }
-
+            Controller.executeCommand(userInput);
+//            if(CommandParser.isThereAPipe){   [Moved to Controller]
+//                String cmd=CommandParser.getNextRawCommandAfterPipe();
+//                CommandCompostion.pipe(cmd);
+//            }
         }
     }
 }
