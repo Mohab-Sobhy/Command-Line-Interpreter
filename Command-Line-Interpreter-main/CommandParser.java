@@ -139,7 +139,7 @@ public class CommandParser {
                     } else {
                         if (!arguments.isEmpty()) {
                             String originalDir = Meta.getCurrentDir();
-                            Meta.setCurrentDir(arguments.get(0));
+                            Meta.setCurrentDir(String.join(" ",arguments));
                             DirectoryExplorer.ls();
                             Meta.setCurrentDir(originalDir);
                         } else {
