@@ -10,28 +10,7 @@ public class Controller {
                 break;
 
             case "ls":
-                if (!CommandParser.getOptions().isEmpty()) {
-                    boolean hasA = CommandParser.getOptions().contains('a');
-                    boolean hasR = CommandParser.getOptions().contains('r');
-                    if (hasA && hasR) {
-                        DirectoryExplorer.lsAR();
-                    } else if (hasA) {
-                        DirectoryExplorer.lsA();
-                    } else if (hasR) {
-                        DirectoryExplorer.lsR();
-                    } else {
-                        System.err.println("Unsupported ls option");
-                    }
-                } else {
-                    if (!CommandParser.getArguments().isEmpty()) {
-                        String originalDir = Meta.getCurrentDir();
-                        Meta.setCurrentDir(CommandParser.getArguments().get(0));
-                        DirectoryExplorer.ls();
-                        Meta.setCurrentDir(originalDir);
-                    } else {
-                        DirectoryExplorer.ls();
-                    }
-                }
+                DirectoryExplorer.ls(CommandParser.getOptions() , CommandParser.getArguments());
                 break;
 
             case "cd":
@@ -39,7 +18,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        DirectoryExplorer.cd();
+                        DirectoryExplorer.cd(CommandParser.getArguments());
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());

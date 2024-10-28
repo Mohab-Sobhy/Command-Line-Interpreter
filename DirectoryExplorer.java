@@ -5,18 +5,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class DirectoryExplorer {
+
     public static void pwd() {
         System.out.println(Meta.getCurrentDir());
     }
 
-
-    public static void cd(){
-        if (!CommandParser.getArguments().isEmpty()) {
+    public static void cd(ArrayList<String> arguments){
+        if (!arguments.isEmpty()) {
             String NewPath = String.join(" ", CommandParser.getArguments());
             String CurrentPath = Meta.getCurrentDir();
             File directory = new File(NewPath);
             if (!directory.exists()) {
-                System.out.println("The directory " + NewPath + " does not exist: ");
+                System.err.println("The directory " + NewPath + " does not exist");
             } else {
                 if (NewPath.equals(CurrentPath)) {
                     System.out.println("You are already in the " + CurrentPath + " directory");
@@ -25,13 +25,50 @@ public class DirectoryExplorer {
                     System.out.println("the new current path is : " + NewPath);
                 }
             }
-        } else {
+        }
+        else {
             System.out.println("No Given Path");
         }
     }
+
+    public static void ls(ArrayList<Character> options , ArrayList<String> arguments){
+        String pathToList;
+        if(arguments.isEmpty()){
+            pathToList = Meta.getCurrentDir();
+        }
+        else{
+            pathToList = arguments.getFirst();
+        }
+
+        StringBuilder sb = new StringBuilder(); //concatinate options as one string
+        for (Character ch : options) {
+            sb.append(ch);
+        }
+        String result = sb.toString();
+
+        switch (result){
+            case "" :
+                ls(pathToList);
+                break;
+            case "a" :
+                lsA(pathToList);
+                break;
+            case "r" :
+                lsR(pathToList);
+                break;
+            case "ra" :
+            case "ar" :
+                lsAR(pathToList);
+                break;
+            default:
+                System.err.println(result + ": Unsupported ls option");
+        }
+
+    }
+
     // Basic ls command
-    public static void ls() {
-        File directory = new File(String.join(" ", CommandParser.getArguments()));
+    private static void ls(String path) {
+        File directory = new File(path);
         File[] files = directory.listFiles();
         if (files != null) {
             Arrays.sort(files);
@@ -43,8 +80,8 @@ public class DirectoryExplorer {
         }
     }
     // ls -a command shows files including hidden ones
-    public static void lsA() {
-        File directory = new File(Meta.getCurrentDir());
+    private static void lsA(String path) {
+        File directory = new File(path);
         File[] files = directory.listFiles();
         if (files != null) {
             Arrays.sort(files);
@@ -55,8 +92,8 @@ public class DirectoryExplorer {
         }
     }
     // ls -r command files in reverse order
-    public static void lsR() {
-        File directory = new File(Meta.getCurrentDir());
+    private static void lsR(String path) {
+        File directory = new File(path);
         File[] files = directory.listFiles();
         if (files != null) {
             Arrays.sort(files, (f1, f2) -> f2.getName().compareTo(f1.getName())); // Reverse order
@@ -68,8 +105,8 @@ public class DirectoryExplorer {
         }
     }
     // ls -a-r command shows ALL including files in reverse order
-    public static void lsAR() {
-        File directory = new File(Meta.getCurrentDir());
+    private static void lsAR(String path) {
+        File directory = new File(path);
         File[] files = directory.listFiles();
         if (files != null) {
             List<String> allEntries = new ArrayList<>();
@@ -78,7 +115,7 @@ public class DirectoryExplorer {
                 allEntries.add(file.getName());
             }
             // Sort in reverse order
-            Collections.sort(allEntries, Collections.reverseOrder());
+            allEntries.sort(Collections.reverseOrder());
             // Print all entries
             for (String entry : allEntries) {
                 System.out.println(entry);
