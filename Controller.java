@@ -29,6 +29,20 @@ public class Controller {
                 }
                 break;
 
+            case "cd" :
+                try{
+                    if(CommandParser.getArguments().isEmpty()){
+                        throw new IllegalArgumentException("missing Argument");
+                    }
+                    else{
+                        //DirectoryAction.cd(arguments);
+                    }
+                }
+                catch (IllegalArgumentException e){
+                    System.err.print(e.getMessage());
+                }
+                break;
+
             case "mkdir" :
                 try{
                     if(CommandParser.getArguments().isEmpty()){
