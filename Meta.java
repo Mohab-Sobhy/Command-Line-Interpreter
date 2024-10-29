@@ -1,5 +1,6 @@
 public class Meta {
     private static String currentDir = System.getProperty("user.dir");
+
     private static String lastOutput;
     public static String getCurrentDir() {
         return currentDir;

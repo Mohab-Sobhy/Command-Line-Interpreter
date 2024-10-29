@@ -7,12 +7,16 @@ import java.util.List;
 public class DirectoryExplorer {
 
     public static void pwd() {
-        System.out.println(Meta.getCurrentDir());
+
+        if(CommandParser.getRedirectionTarget().equals("Screen")){
+            System.out.println(Meta.getCurrentDir());
+        }
+        Meta.setLastOutput(Meta.getCurrentDir());
     }
 
     public static void cd(ArrayList<String> arguments){
         if (!arguments.isEmpty()) {
-            String NewPath = arguments.getFirst();
+            String NewPath = String.join(" ",arguments);
             String CurrentPath = Meta.getCurrentDir();
             File directory = new File(NewPath);
             if (!directory.exists()) {
@@ -74,7 +78,10 @@ public class DirectoryExplorer {
             Arrays.sort(files);
             for (File file : files) {
                 if (!file.isHidden()) {  // Skip hidden files (those starting with .)
-                    System.out.println(file.getName());
+                    if(CommandParser.getRedirectionTarget().equals("Screen")){
+                        System.out.println(file.getName());
+                    }
+                    Meta.setLastOutput(file.getName());
                 }
             }
         }
@@ -87,7 +94,10 @@ public class DirectoryExplorer {
             Arrays.sort(files);
             //show all including hidden ones
             for (File file : files) {
+                if(CommandParser.getRedirectionTarget().equals("Screen")){
                 System.out.println(file.getName());
+                }
+                Meta.setLastOutput(file.getName());
             }
         }
     }
@@ -99,7 +109,10 @@ public class DirectoryExplorer {
             Arrays.sort(files, (f1, f2) -> f2.getName().compareTo(f1.getName())); // Reverse order
             for (File file : files) {
                 if (!file.isHidden()) {
-                    System.out.println(file.getName());
+                    if(CommandParser.getRedirectionTarget().equals("Screen")){
+                        System.out.println(file.getName());
+                    }
+                    Meta.setLastOutput(file.getName());
                 }
             }
         }
@@ -118,7 +131,10 @@ public class DirectoryExplorer {
             allEntries.sort(Collections.reverseOrder());
             // Print all entries
             for (String entry : allEntries) {
-                System.out.println(entry);
+                if(CommandParser.getRedirectionTarget().equals("Screen")){
+                    System.out.println(entry);
+                }
+                Meta.setLastOutput(entry);
             }
         }
     }
