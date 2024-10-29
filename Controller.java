@@ -114,10 +114,10 @@ public class Controller {
             CommandCompostion.pipe(CommandParser.getNextRawCommandAfterPipe());
         }
         if (CommandParser.isThereARedirectOutput) {
-            //CommandCompostion.RedirectOutput(CommandParser.getRedirectionTarget());
+            CommandCompostion.redirectOutput(CommandParser.getRedirectionTarget());
         }
         if (CommandParser.isThereAnAppendOutput) {
-            //CommandCompostion.AppendOutput(CommandParser.getRedirectionTarget());
+            CommandCompostion.appendOutput(CommandParser.getRedirectionTarget());
         }
     }
 }

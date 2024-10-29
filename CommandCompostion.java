@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ContentHandler;
 
 public class CommandCompostion {
-    
+
     public static void pipe(String NextAfterPipe) {
         Controller.executeCommand(NextAfterPipe);
     }
@@ -19,27 +19,30 @@ public class CommandCompostion {
         }
         try {
             File file;
-            if (directoryPath.length() == 0) {
+            if (directoryPath.isEmpty()) {
                 file = new File(fileName);
             } else {
                 File directory = new File(directoryPath.toString());
                 if (!directory.exists()) {
-                    System.err.println("Failed to create directory: " + directoryPath);
+                    System.err.println("Failed to find directory: " + directoryPath);
                     return;
                 }
                 file = new File(directory, fileName);
             }
             if (file.exists()) {
-                if (!file.delete()) {
-                    System.err.println("Failed to delete existing file: " + file.getAbsolutePath());
-                    return;
-                }
+                file.delete();
             }
             if (file.createNewFile()) {
                 System.out.println("File created successfully: " + file.getAbsolutePath());
+                try (FileWriter writer = new FileWriter(file, true)) {
+                    String content = Meta.getLastOutput();
+                    writer.write(content);// `true` enables append mode
+                }
+
             } else {
                 System.err.println("Failed to create file: " + file.getAbsolutePath());
             }
+
 
         } catch (IOException e) {
             System.err.println("Error handling file: " + e.getMessage());
@@ -58,7 +61,7 @@ public class CommandCompostion {
 
         try {
             File file;
-            if (directoryPath.length() == 0) {
+            if (directoryPath.isEmpty()) {
                 file = new File(fileName);
             } else {
                 File directory = new File(directoryPath.toString());
@@ -70,7 +73,9 @@ public class CommandCompostion {
             }
 
             // Append to the file (or create it if it does not exist)
-            try (FileWriter writer = new FileWriter(file, true)) {  // `true` enables append mode , should be a content parameter to overwrite
+            try (FileWriter writer = new FileWriter(file, true)) {
+                String content = Meta.getLastOutput();
+                writer.write(content);// `true` enables append mode
                 System.out.println("File exists or created: " + file.getAbsolutePath());
             }
 

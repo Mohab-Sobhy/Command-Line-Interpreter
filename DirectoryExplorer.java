@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class DirectoryExplorer {
-
+ String [] Outputs;
     public static void pwd() {
 
         if(CommandParser.getRedirectionTarget().equals("Screen")){
@@ -81,6 +81,7 @@ public class DirectoryExplorer {
                     if(CommandParser.getRedirectionTarget().equals("Screen")){
                         System.out.println(file.getName());
                     }
+
                     Meta.setLastOutput(file.getName());
                 }
             }
