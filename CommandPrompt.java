@@ -25,36 +25,36 @@ public class CommandPrompt {
             String[] arguments = new String[commandParts.length - 1];
             System.arraycopy(commandParts, 1, arguments, 0, commandParts.length - 1);
 
-            switch (command) {
-                case "mkdir":
-                    DirectoryAction.mkdir(arguments);
-                    break;
-                case "rmdir":
-                    DirectoryAction.rmdir(arguments);
-                    break;
-                case "touch":
-                    FileAction.touch(arguments);
-                    break;
-                case "rm":
-                    FileAction.rm(arguments);
-                    break;
-                case "cat":
-                    FileAction.cat(arguments);
-                    break;
-                case "mv":
-                    if (arguments.length < 2) {
-                        System.err.println("Error: At least three separate statements are needed (command and arguments(sourc , dest)).");
-                    } else {
-                        String destination = arguments[arguments.length - 1];
-                        String[] sourceFiles = new String[arguments.length - 1];
-                        System.arraycopy(arguments, 0, sourceFiles, 0, arguments.length - 1);
-                        FileAction.mv(sourceFiles, destination);
-                    }
-                    break;
-                default:
-                    System.err.println("Invalid command: " + command);
-                    break;
-            }
+//            switch (command) {
+//                case "mkdir":
+//                    DirectoryAction.mkdir(arguments);
+//                    break;
+//                case "rmdir":
+//                    DirectoryAction.rmdir(arguments);
+//                    break;
+//                case "touch":
+//                    FileAction.touch(arguments);
+//                    break;
+//                case "rm":
+//                    FileAction.rm(arguments);
+//                    break;
+//                case "cat":
+//                    FileAction.cat(arguments);
+//                    break;
+//                case "mv":
+//                    if (arguments.length < 2) {
+//                        System.err.println("Error: At least three separate statements are needed (command and arguments(sourc , dest)).");
+//                    } else {
+//                        String destination = arguments[arguments.length - 1];
+//                        String[] sourceFiles = new String[arguments.length - 1];
+//                        System.arraycopy(arguments, 0, sourceFiles, 0, arguments.length - 1);
+//                        FileAction.mv(sourceFiles, destination);
+//                    }
+//                    break;
+//                default:
+//                    System.err.println("Invalid command: " + command);
+//                    break;
+//            }
         }
         scanner.close(); 
     }

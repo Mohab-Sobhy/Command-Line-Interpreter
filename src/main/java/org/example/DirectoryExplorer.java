@@ -7,22 +7,26 @@ import java.util.Collections;
 import java.util.List;
 
 public class DirectoryExplorer {
- String [] Outputs;
+    String[] Outputs;
+
     public static void pwd() {
 
-        if(CommandParser.getRedirectionTarget().equals("Screen")){
+        if (CommandParser.getRedirectionTarget().equals("Screen")) {
             System.out.println(Meta.getCurrentDir());
         }
         Meta.setLastOutput(Meta.getCurrentDir());
     }
 
-    public static void cd(ArrayList<String> arguments){
+    public static String error;
+
+    public static void cd(ArrayList<String> arguments) {
         if (!arguments.isEmpty()) {
-            String NewPath = String.join(" ",arguments);
+            String NewPath = String.join(" ", arguments);
             String CurrentPath = Meta.getCurrentDir();
             File directory = new File(NewPath);
             if (!directory.exists()) {
-                System.err.println("The directory \"" + NewPath + "\" does not exist");
+                error = "The directory \"" + NewPath + "\" does not exist";
+                System.err.println(error);
             } else {
                 if (NewPath.equals(CurrentPath)) {
                     System.out.println("You are already in the " + CurrentPath + " directory");
@@ -31,18 +35,16 @@ public class DirectoryExplorer {
                     System.out.println("the new current path is : " + NewPath);
                 }
             }
-        }
-        else {
+        } else {
             System.out.println("No Given Path");
         }
     }
 
-    public static void ls(ArrayList<Character> options , ArrayList<String> arguments){
+    public static void ls(ArrayList<Character> options, ArrayList<String> arguments) {
         String pathToList;
-        if(arguments.isEmpty()){
+        if (arguments.isEmpty()) {
             pathToList = Meta.getCurrentDir();
-        }
-        else{
+        } else {
             pathToList = arguments.getFirst();
         }
 
@@ -52,18 +54,18 @@ public class DirectoryExplorer {
         }
         String result = sb.toString();
 
-        switch (result){
-            case "" :
+        switch (result) {
+            case "":
                 ls(pathToList);
                 break;
-            case "a" :
+            case "a":
                 lsA(pathToList);
                 break;
-            case "r" :
+            case "r":
                 lsR(pathToList);
                 break;
-            case "ra" :
-            case "ar" :
+            case "ra":
+            case "ar":
                 lsAR(pathToList);
                 break;
             default:
@@ -80,7 +82,7 @@ public class DirectoryExplorer {
             Arrays.sort(files);
             for (File file : files) {
                 if (!file.isHidden()) {  // Skip hidden files (those starting with .)
-                    if(CommandParser.getRedirectionTarget().equals("Screen")){
+                    if (CommandParser.getRedirectionTarget().equals("Screen")) {
                         System.out.println(file.getName());
                     }
 
@@ -89,6 +91,7 @@ public class DirectoryExplorer {
             }
         }
     }
+
     // ls -a command shows files including hidden ones
     private static void lsA(String path) {
         File directory = new File(path);
@@ -97,13 +100,14 @@ public class DirectoryExplorer {
             Arrays.sort(files);
             //show all including hidden ones
             for (File file : files) {
-                if(CommandParser.getRedirectionTarget().equals("Screen")){
-                System.out.println(file.getName());
+                if (CommandParser.getRedirectionTarget().equals("Screen")) {
+                    System.out.println(file.getName());
                 }
                 Meta.setLastOutput(file.getName());
             }
         }
     }
+
     // ls -r command files in reverse order
     private static void lsR(String path) {
         File directory = new File(path);
@@ -112,7 +116,7 @@ public class DirectoryExplorer {
             Arrays.sort(files, (f1, f2) -> f2.getName().compareTo(f1.getName())); // Reverse order
             for (File file : files) {
                 if (!file.isHidden()) {
-                    if(CommandParser.getRedirectionTarget().equals("Screen")){
+                    if (CommandParser.getRedirectionTarget().equals("Screen")) {
                         System.out.println(file.getName());
                     }
                     Meta.setLastOutput(file.getName());
@@ -120,6 +124,7 @@ public class DirectoryExplorer {
             }
         }
     }
+
     // ls -a-r command shows ALL including files in reverse order
     private static void lsAR(String path) {
         File directory = new File(path);
@@ -134,7 +139,7 @@ public class DirectoryExplorer {
             allEntries.sort(Collections.reverseOrder());
             // Print all entries
             for (String entry : allEntries) {
-                if(CommandParser.getRedirectionTarget().equals("Screen")){
+                if (CommandParser.getRedirectionTarget().equals("Screen")) {
                     System.out.println(entry);
                 }
                 Meta.setLastOutput(entry);

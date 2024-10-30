@@ -5,8 +5,10 @@ public class InternalCommands {
         System.out.println("Exiting the program...");
         System.exit(0);
     }
+
     public static void help() {
         System.out.println("commands guid:");
+
         System.out.println("  pwd       - Display the current directory path.");
         System.out.println("  ls        - List files and directories in the current directory.");
         System.out.println("  mkdir     - Create new directories.");
