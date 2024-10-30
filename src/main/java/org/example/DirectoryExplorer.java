@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DirectoryExplorer {
     String[] Outputs;
-
+    public static String OldPath = Meta.getCurrentDir();
     public static void pwd() {
 
         if (CommandParser.getRedirectionTarget().equals("Screen")) {
