@@ -64,12 +64,9 @@ public class Controller {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
                         String dest = CommandParser.getArguments().getLast();
-                        ArrayList<String> source=new ArrayList<>();
-                        for(int i =0 ; i<CommandParser.getArguments().size()-1 ; i++)
-                            source.set(i,CommandParser.getArguments().get(i));
-                        FileAction.mv(source,dest);
-                        
-                        
+                        for(int i =0 ; i<CommandParser.getArguments().size()-1 ; i++){
+                            FileAction.mv(CommandParser.getArguments().get(i),dest);
+                        }
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());

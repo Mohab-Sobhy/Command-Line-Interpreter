@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class FileAction {
@@ -64,43 +65,14 @@ public class FileAction {
         }
     }
 
-    public static void mv(ArrayList<String> input, String dir_or_file) {
-        if (input == null || input.isEmpty()) {
-            System.err.println("No files specified.");
-            return;
-        }
-
-        if (input.size() == 1) {
-            File source_file = Factory.createForD(input.get(0));
-            File destFile = Factory.createForD(dir_or_file);
-
-            if (source_file.exists()) {
-                if (source_file.renameTo(destFile))
-                    System.out.println("File: " + source_file.getName() + " moved to: " + destFile.getPath());
-                else
-                    System.err.println("Error moving file: " + source_file.getName() + " to: " + destFile.getPath());
-            } else
-                System.err.println("File: " + source_file.getName() + " does not exist.");
-        } else {
-            File dir = Factory.createForD(dir_or_file);
-            if (!dir.exists())
-                dir.mkdirs();
-            else if (!dir.isDirectory()) {
-                System.err.println("Destination is not a directory: " + dir_or_file);
-                return;
-            }
-
-            for (String filename : input) {
-                File sourceFile = Factory.createForD(filename);
-                if (sourceFile.exists()) {
-                    File destFile = new File(dir, sourceFile.getName());
-                    if (sourceFile.renameTo(destFile))
-                        System.out.println("File: " + sourceFile.getName() + " moved to directory: " + dir.getPath() + " successfully.");
-                    else
-                        System.err.println("Error moving file: " + sourceFile.getName() + " to directory: " + dir.getPath());
-                } else
-                    System.err.println("File: " + sourceFile.getName() + " does not exist.");
-            }
+    public static void mv(String sourcePath, String destDir) {
+        try {
+            Path source = Paths.get(sourcePath);
+            Path destination = Paths.get(destDir, source.getFileName().toString());
+            Files.move(source, destination);
+            System.out.println("File moved successfully!");
+        } catch (IOException e) {
+            System.out.println("An error occurred while moving the file: " + e.getMessage());
         }
     }
 }
