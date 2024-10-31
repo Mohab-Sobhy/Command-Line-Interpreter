@@ -49,7 +49,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        //FileAction.touch(CommandParser.getArguments()); abdallah
+                        FileAction.touch(CommandParser.getArguments());
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -61,7 +61,13 @@ public class Controller {
                     if (CommandParser.getArguments().size() < 2) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        //FileAction.mv(CommandParser.getArguments()); abdallah
+                        String dest = CommandParser.getArguments().getLast();
+                        ArrayList<String> source;
+                        for(int i =1 ; i<getArguments().size()-1 ; i++)
+                                source.set(i,ommandParser.getArguments().get(i));
+                        FileAction.mv(source,dest);
+                        
+                        
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
