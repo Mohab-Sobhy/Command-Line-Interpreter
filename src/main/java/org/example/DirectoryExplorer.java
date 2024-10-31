@@ -48,7 +48,7 @@ public class DirectoryExplorer {
         if (arguments.isEmpty()) {
             pathToList = Meta.getCurrentDir();
         } else {
-            pathToList = arguments.get(0);
+            pathToList = String.join(" ",arguments);
         }
 
         StringBuilder sb = new StringBuilder(); //concatenate options as one string

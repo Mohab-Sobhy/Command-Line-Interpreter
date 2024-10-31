@@ -25,7 +25,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        DirectoryAction.mkdir(CommandParser.getArguments());
+                       // DirectoryAction.mkdir(CommandParser.getArguments()); abdallah
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -37,7 +37,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        DirectoryAction.rmdir(CommandParser.getArguments());
+                        //DirectoryAction.rmdir(CommandParser.getArguments()); abdallah
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -49,7 +49,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        FileAction.touch(CommandParser.getArguments());
+                        //FileAction.touch(CommandParser.getArguments()); abdallah
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -61,7 +61,7 @@ public class Controller {
                     if (CommandParser.getArguments().size() < 2) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        //FileAction.mv(CommandParser.getArguments());
+                        //FileAction.mv(CommandParser.getArguments()); abdallah
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -73,7 +73,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        //FileAction.rm(arguments);
+                        //FileAction.rm(CommandParser.getArguments()); abdallah
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -106,6 +106,12 @@ public class Controller {
 
             case ">": //if user make pipe and command starts with >
                 CommandCompostion.redirectOutput(CommandParser.getRedirectionArg());
+                break;
+
+            case "echo":
+                for (String argument : CommandParser.getArguments()) {
+                    System.out.println(argument);
+                }
                 break;
 
             default:
