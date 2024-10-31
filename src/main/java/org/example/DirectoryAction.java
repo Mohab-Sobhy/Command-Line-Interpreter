@@ -1,50 +1,43 @@
 package org.example;
-
 import java.io.File;
-public class DirectoryAction
-{
+import java.util.ArrayList;
 
-    public static void mkdir(Object input)
-    {
-        String[] Dirname_s = Factory.Convert_to_array(input);
-        assert(Dirname_s!=null);
+public class DirectoryAction {
+    public static void mkdir(ArrayList<String> input) {
+        if (input == null || input.isEmpty()) {
+            System.err.println("No directories specified.");
+            return;
+        }
 
-        for(String Dirname : Dirname_s)
-        {
+        for (String Dirname : input) {
             File newdir = Factory.createForD(Dirname);
 
-            if(!newdir.exists())
-            {
-                if(newdir.mkdirs())
-                    System.out.println("Dir: "+newdir.getName()+" created successfully");
+            if (!newdir.exists()) {
+                if (newdir.mkdirs())
+                    System.out.println("Directory: " + newdir.getName() + " created successfully.");
                 else
-                    System.err.println("failed to create:"+newdir.getName());
-            }
-            else
-                System.err.println("Dir: "+newdir.getName()+" is already exists before");
+                    System.err.println("Failed to create directory: " + newdir.getName());
+            } else
+                System.err.println("Directory: " + newdir.getName() + " already exists.");
         }
     }
 
-    public static void rmdir(Object input)
-    {
-        String[] Dirname_s = Factory.Convert_to_array(input);
-        assert(Dirname_s!=null);
+    public static void rmdir(ArrayList<String> input) {
+        if (input == null || input.isEmpty()) {
+            System.err.println("No directories specified.");
+            return;
+        }
 
-        for( String Dirname : Dirname_s )
-        {
+        for (String Dirname : input) {
             File Dir = Factory.createForD(Dirname);
 
-            if(Dir.exists()&&Dir.isDirectory())
-            {
-                if(Dir.delete())
-                    System.out.println("Dir: "+Dir.getName()+" deleted successfully");
+            if (Dir.exists() && Dir.isDirectory()) {
+                if (Dir.delete())
+                    System.out.println("Directory: " + Dir.getName() + " deleted successfully.");
                 else
-                    System.err.println("failed to remove Dir: "+Dir.getName());
-            }
-            else
-                System.err.println("Dir: "+Dir.getName()+" is not exists to remove it");
+                    System.err.println("Failed to remove directory: " + Dir.getName());
+            } else
+                System.err.println("Directory: " + Dir.getName() + " does not exist.");
         }
     }
-
-
-};
+}
