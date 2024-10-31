@@ -25,7 +25,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                       // DirectoryAction.mkdir(CommandParser.getArguments()); abdallah
+                        DirectoryAction.mkdir(CommandParser.getArguments()); 
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -37,7 +37,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        //DirectoryAction.rmdir(CommandParser.getArguments()); abdallah
+                        DirectoryAction.rmdir(CommandParser.getArguments()); 
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
