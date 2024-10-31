@@ -79,7 +79,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        //FileAction.rm(CommandParser.getArguments()); abdallah
+                        FileAction.rm(CommandParser.getArguments());
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
@@ -91,7 +91,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        //FileAction.cat(arguments);
+                        FileAction.cat(arguments);
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
