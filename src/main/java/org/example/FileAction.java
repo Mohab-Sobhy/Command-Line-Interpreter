@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileAction {
     public static void touch(ArrayList<String> input) {
@@ -54,16 +55,30 @@ public class FileAction {
         for (String filename : input) {
             File file = Factory.createForD(filename);
             if (file.exists()) {
-                System.out.println("Content of file " + file.getName() + ":");
+                if(CommandParser.getRedirectionTarget().equals("Screen")) {
+                    System.out.println("Content of file " + file.getName() + ":");
+                }
+                StringBuilder lastOutput = new StringBuilder();
                 try {
-                    Files.lines(Path.of(file.getPath())).forEach(System.out::println);
+                    List<String> lines = Files.readAllLines(Path.of(file.getPath()));
+                    for (String line : lines) {
+                        if(CommandParser.getRedirectionTarget().equals("Screen")){
+                            System.out.println(line);
+                        }
+                        lastOutput.append(line).append(System.lineSeparator());
+                    }
                 } catch (IOException e) {
                     System.err.println("Error reading file: " + file.getName());
                 }
-            } else
+                String finalOutput = lastOutput.toString();
+                Meta.setLastOutput(finalOutput);
+            } else {
                 System.err.println("File: " + file.getName() + " does not exist.");
+            }
         }
     }
+
+
 
     public static void mv(String sourcePath, String destinationPath) {
         try {
