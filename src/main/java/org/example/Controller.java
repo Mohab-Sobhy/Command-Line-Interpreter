@@ -64,7 +64,7 @@ public class Controller {
                         String dest = CommandParser.getArguments().getLast();
                         ArrayList<String> source;
                         for(int i =1 ; i<getArguments().size()-1 ; i++)
-                                source.set(i,ommandParser.getArguments().get(i));
+                                source.set(i,CommandParser.getArguments().get(i));
                         FileAction.mv(source,dest);
                         
                         
