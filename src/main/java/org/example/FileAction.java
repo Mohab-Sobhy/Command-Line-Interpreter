@@ -65,14 +65,20 @@ public class FileAction {
         }
     }
 
-    public static void mv(String sourcePath, String destDir) {
+    public static void mv(String sourcePath, String destinationPath) {
         try {
             Path source = Paths.get(sourcePath);
-            Path destination = Paths.get(destDir, source.getFileName().toString());
+            Path destination = Paths.get(destinationPath);
+
+            if (Files.isDirectory(destination)) {
+                destination = destination.resolve(source.getFileName());
+            }
+
             Files.move(source, destination);
-            System.out.println("File moved successfully!");
+            System.out.println("File moved successfully to: " + destination.toString());
         } catch (IOException e) {
             System.out.println("An error occurred while moving the file: " + e.getMessage());
         }
     }
+
 }
