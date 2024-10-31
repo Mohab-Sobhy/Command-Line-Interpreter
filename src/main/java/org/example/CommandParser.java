@@ -124,7 +124,6 @@ public class CommandParser {
                     break;
 
                 default:
-
                     break;
             }
         }
@@ -151,7 +150,6 @@ public class CommandParser {
     }
 
     public static String getRedirectionTarget() {
-
         return redirectionTarget;
     }
 

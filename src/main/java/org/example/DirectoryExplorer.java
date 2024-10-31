@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class DirectoryExplorer {
-    static String oldPath = Meta.getCurrentDir();
+
+    public static String oldPath = Meta.getCurrentDir();
     String[] Outputs;
 
     public static void pwd() {
@@ -48,7 +49,7 @@ public class DirectoryExplorer {
         if (arguments.isEmpty()) {
             pathToList = Meta.getCurrentDir();
         } else {
-            pathToList = arguments.get(0);
+            pathToList = String.join(" ",arguments);
         }
 
         StringBuilder sb = new StringBuilder(); //concatenate options as one string
@@ -78,25 +79,23 @@ public class DirectoryExplorer {
     }
 
     // Basic ls command
-    private static void ls(String path) {
+    public static void ls(String path) {
         File directory = new File(path);
         File[] files = directory.listFiles();
         StringBuilder outputBuilder = new StringBuilder();
         if (files != null) {
             Arrays.sort(files);
             for (File file : files) {
-                if (!file.isHidden()) {  // Skip hidden files (those starting with .)
+                if (!file.isHidden()) {
                     if (CommandParser.getRedirectionTarget().equals("Screen")) {
                         System.out.println(file.getName());
-
                     }
-                    outputBuilder.append(file.getName()).append(System.lineSeparator());
+                    outputBuilder.append(file.getName()).append("\n");
                 }
             }
         }
-        Meta.setLastOutput(outputBuilder.toString().trim());
+        Meta.setLastOutput(outputBuilder.toString().trim()); // Store final output in Meta
     }
-
     // ls -a command shows files including hidden ones
     private static void lsA(String path) {
         File directory = new File(path);
