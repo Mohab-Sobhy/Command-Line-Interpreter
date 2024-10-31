@@ -1,6 +1,8 @@
 package org.example;
 
 
+import java.util.ArrayList;
+
 public class Controller {
 
     public static void executeCommand(String rawInput) {
@@ -62,9 +64,9 @@ public class Controller {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
                         String dest = CommandParser.getArguments().getLast();
-                        ArrayList<String> source;
-                        for(int i =1 ; i<getArguments().size()-1 ; i++)
-                                source.set(i,CommandParser.getArguments().get(i));
+                        ArrayList<String> source=new ArrayList<>();
+                        for(int i =0 ; i<CommandParser.getArguments().size()-1 ; i++)
+                            source.set(i,CommandParser.getArguments().get(i));
                         FileAction.mv(source,dest);
                         
                         
@@ -91,7 +93,7 @@ public class Controller {
                     if (CommandParser.getArguments().isEmpty()) {
                         throw new IllegalArgumentException("missing Argument");
                     } else {
-                        FileAction.cat(arguments);
+                        FileAction.cat(CommandParser.getArguments());
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.print(e.getMessage());
